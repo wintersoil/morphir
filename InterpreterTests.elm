@@ -242,4 +242,14 @@ evaluateValueTests =
                                 (Value.Literal () (FloatLiteral 5.4))
                             )
                             (Value.Literal () (FloatLiteral 48.36215533063266))
+        , check "list append 3 3 4 3 3 4"
+                            (Value.Apply ()
+                                (Value.Apply ()
+                                    (Value.Reference () (fqn "Morphir.SDK" "List" "append"))
+                                    (Value.List () [Value.literal () (IntLiteral 3), Value.literal () (IntLiteral 4),Value.literal () (IntLiteral 3)])
+                                )
+                                (Value.List () [Value.literal () (IntLiteral 3), Value.literal () (IntLiteral 4),Value.literal () (IntLiteral 3)])
+                            )
+                            (Value.List () [Value.literal () (IntLiteral 3), Value.literal () (IntLiteral 4),Value.literal () (IntLiteral 3), Value.literal () (IntLiteral 3), Value.literal () (IntLiteral 4),Value.literal () (IntLiteral 3)])
+
         ]

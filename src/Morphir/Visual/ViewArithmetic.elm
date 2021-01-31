@@ -99,7 +99,7 @@ view viewValue arithmeticOperatorTree =
 
                                 else if riseInPrecedence arithmeticOperatorTrees i 0 (currentPrecedence (functionName arithmeticOperator)) arithmeticOperator then
                                     row
-                                        [ padding 5
+                                        [ padding 2
                                         , spacing 5
                                         , centerX
                                         ]
@@ -107,7 +107,7 @@ view viewValue arithmeticOperatorTree =
 
                                 else if i < List.length arithmeticOperatorTrees - 1 then
                                     row
-                                        [ padding 5
+                                        [ padding 2
                                         , spacing 5
                                         , centerX
                                         ]
@@ -115,7 +115,7 @@ view viewValue arithmeticOperatorTree =
 
                                 else
                                     row
-                                        [ padding 5
+                                        [ padding 2
                                         , spacing 5
                                         , centerX
                                         ]

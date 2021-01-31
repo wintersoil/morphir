@@ -63,6 +63,17 @@ lawOfGravitation12 : Float -> Float -> Float -> Float -> Float
 lawOfGravitation12 g m1 m2 r =
     g * m1 * m2 / r * r
 
+lawOfGravitation13 : Float -> Float -> Float -> Float -> Float
+lawOfGravitation13 g m1 m2 r =
+    g - m1 + m2 - r
+
+unemploymentRate : Float -> Float -> Float
+unemploymentRate unemployed employed=
+    unemployed / employed
+
+amortization : Float -> Float -> Float -> Float -> Float
+amortization p r n t=
+    (p * r / n) / (1 - (1 + r / n) - n * t)
 
 basicLiteralBool : Bool
 basicLiteralBool =

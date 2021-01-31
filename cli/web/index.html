@@ -16729,20 +16729,6 @@ var $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticVal
 };
 var $author$project$Morphir$Visual$Components$AritmeticExpressions$Multiply = {$: 'Multiply'};
 var $author$project$Morphir$Visual$Components$AritmeticExpressions$Subtract = {$: 'Subtract'};
-var $author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence = function (operatorName) {
-	switch (operatorName) {
-		case 'Basics.add':
-			return 1;
-		case 'Basics.subtract':
-			return 1;
-		case 'Basics.multiply':
-			return 2;
-		case 'Basics.divide':
-			return 3;
-		default:
-			return 0;
-	}
-};
 var $author$project$Morphir$IR$Name$toCamelCase = function (name) {
 	var _v0 = $author$project$Morphir$IR$Name$toList(name);
 	if (!_v0.b) {
@@ -16873,9 +16859,8 @@ var $author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithme
 				var _v6 = _v5.b;
 				var arg2 = _v6.a;
 				return _Utils_eq(
-					$author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence(
-						A2($author$project$Morphir$Visual$Components$AritmeticExpressions$functionName, moduleName, localName)),
-					$author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence(operatorName)) ? _Utils_ap(
+					A2($author$project$Morphir$Visual$Components$AritmeticExpressions$functionName, moduleName, localName),
+					operatorName) ? _Utils_ap(
 					A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, arg1, operatorName),
 					A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, arg2, operatorName)) : _List_fromArray(
 					[
@@ -17662,7 +17647,7 @@ var $author$project$Morphir$Visual$ViewArithmetic$view = F2(
 									$mdgriffith$elm_ui$Element$row,
 									_List_fromArray(
 										[
-											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$padding(2),
 											$mdgriffith$elm_ui$Element$spacing(5),
 											$mdgriffith$elm_ui$Element$centerX
 										]),
@@ -17677,7 +17662,7 @@ var $author$project$Morphir$Visual$ViewArithmetic$view = F2(
 									$mdgriffith$elm_ui$Element$row,
 									_List_fromArray(
 										[
-											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$padding(2),
 											$mdgriffith$elm_ui$Element$spacing(5),
 											$mdgriffith$elm_ui$Element$centerX
 										]),
@@ -17686,7 +17671,7 @@ var $author$project$Morphir$Visual$ViewArithmetic$view = F2(
 									$mdgriffith$elm_ui$Element$row,
 									_List_fromArray(
 										[
-											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$padding(2),
 											$mdgriffith$elm_ui$Element$spacing(5),
 											$mdgriffith$elm_ui$Element$centerX
 										]),

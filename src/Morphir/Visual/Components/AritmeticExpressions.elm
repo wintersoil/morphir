@@ -66,7 +66,7 @@ helperArithmeticTreeBuilderRecursion value operatorName =
             in
             case ( function, args ) of
                 ( Value.Reference _ (FQName _ moduleName localName), [ arg1, arg2 ] ) ->
-                    if currentPrecedence (functionName moduleName localName) == currentPrecedence operatorName then
+                    if (functionName moduleName localName) == operatorName then
                         helperArithmeticTreeBuilderRecursion arg1 operatorName ++ helperArithmeticTreeBuilderRecursion arg2 operatorName
 
                     else

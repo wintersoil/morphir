@@ -1,0 +1,12 @@
+{
+    "name": "Morphir.Reference.Model",
+    "sourceDirectory": "src",
+    "exposedModules": [
+        "BooksAndRecords",
+        "Types",
+        "Values",
+        "Issues.Issue210",
+        "Issues.Issue227",
+        "Issues.Issue273"
+    ]
+}

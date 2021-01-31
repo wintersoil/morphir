@@ -12866,6 +12866,11 @@ var $mdgriffith$elm_ui$Internal$Model$Class = F2(
 	});
 var $mdgriffith$elm_ui$Internal$Flag$fontWeight = $mdgriffith$elm_ui$Internal$Flag$flag(13);
 var $mdgriffith$elm_ui$Element$Font$bold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.bold);
+var $mdgriffith$elm_ui$Internal$Model$AlignX = function (a) {
+	return {$: 'AlignX', a: a};
+};
+var $mdgriffith$elm_ui$Internal$Model$CenterX = {$: 'CenterX'};
+var $mdgriffith$elm_ui$Element$centerX = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$CenterX);
 var $mdgriffith$elm_ui$Element$Background$color = function (clr) {
 	return A2(
 		$mdgriffith$elm_ui$Internal$Model$StyleClass,
@@ -12923,6 +12928,10 @@ var $mdgriffith$elm_ui$Element$el = F2(
 				_List_fromArray(
 					[child])));
 	});
+var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
+	return {$: 'Fill', a: a};
+};
+var $mdgriffith$elm_ui$Element$fill = $mdgriffith$elm_ui$Internal$Model$Fill(1);
 var $author$project$Morphir$Visual$Context$Context = F4(
 	function (distribution, references, variables, onReferenceClicked) {
 		return {distribution: distribution, onReferenceClicked: onReferenceClicked, references: references, variables: variables};
@@ -14501,19 +14510,34 @@ var $author$project$Morphir$IR$SDK$Basics$boolType = function (attributes) {
 		A2($author$project$Morphir$IR$SDK$Common$toFQName, $author$project$Morphir$IR$SDK$Basics$moduleName, 'Bool'),
 		_List_Nil);
 };
-var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
-	return {$: 'Fill', a: a};
-};
-var $mdgriffith$elm_ui$Element$fill = $mdgriffith$elm_ui$Internal$Model$Fill(1);
-var $author$project$Morphir$Visual$BoolOperatorTree$And = {$: 'And'};
-var $author$project$Morphir$Visual$BoolOperatorTree$BoolOperatorBranch = F2(
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$Add = {$: 'Add'};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticDivisionBranch = F2(
 	function (a, b) {
-		return {$: 'BoolOperatorBranch', a: a, b: b};
+		return {$: 'ArithmeticDivisionBranch', a: a, b: b};
 	});
-var $author$project$Morphir$Visual$BoolOperatorTree$BoolValueLeaf = function (a) {
-	return {$: 'BoolValueLeaf', a: a};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticOperatorBranch = F2(
+	function (a, b) {
+		return {$: 'ArithmeticOperatorBranch', a: a, b: b};
+	});
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf = function (a) {
+	return {$: 'ArithmeticValueLeaf', a: a};
 };
-var $author$project$Morphir$Visual$BoolOperatorTree$Or = {$: 'Or'};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$Multiply = {$: 'Multiply'};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$Subtract = {$: 'Subtract'};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence = function (operatorName) {
+	switch (operatorName) {
+		case 'Basics.add':
+			return 1;
+		case 'Basics.subtract':
+			return 1;
+		case 'Basics.multiply':
+			return 2;
+		case 'Basics.divide':
+			return 3;
+		default:
+			return 0;
+	}
+};
 var $elm$core$String$cons = _String_cons;
 var $elm$core$Char$toUpper = _Char_toUpper;
 var $author$project$Morphir$IR$Name$capitalize = function (string) {
@@ -14568,7 +14592,7 @@ var $author$project$Morphir$IR$Name$toTitleCase = function (name) {
 			$author$project$Morphir$IR$Name$capitalize,
 			$author$project$Morphir$IR$Name$toList(name)));
 };
-var $author$project$Morphir$Visual$BoolOperatorTree$functionName = F2(
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$functionName = F2(
 	function (moduleName, localName) {
 		return A2(
 			$elm$core$String$join,
@@ -14600,6 +14624,115 @@ var $author$project$Morphir$IR$Value$uncurryApply = F2(
 				_List_fromArray(
 					[lastArg]));
 		}
+	});
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$fromArithmeticTypedValue = function (typedValue) {
+	if (typedValue.$ === 'Apply') {
+		var fun = typedValue.b;
+		var arg = typedValue.c;
+		var _v8 = A2($author$project$Morphir$IR$Value$uncurryApply, fun, arg);
+		var _function = _v8.a;
+		var args = _v8.b;
+		var _v9 = _Utils_Tuple2(_function, args);
+		if ((((_v9.a.$ === 'Reference') && _v9.b.b) && _v9.b.b.b) && (!_v9.b.b.b.b)) {
+			var _v10 = _v9.a;
+			var _v11 = _v10.b;
+			var moduleName = _v11.b;
+			var localName = _v11.c;
+			var _v12 = _v9.b;
+			var arg1 = _v12.a;
+			var _v13 = _v12.b;
+			var arg2 = _v13.a;
+			var operatorName = A2($author$project$Morphir$Visual$Components$AritmeticExpressions$functionName, moduleName, localName);
+			switch (operatorName) {
+				case 'Basics.add':
+					return A2(
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticOperatorBranch,
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$Add,
+						A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, typedValue, operatorName));
+				case 'Basics.subtract':
+					return A2(
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticOperatorBranch,
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$Subtract,
+						A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, typedValue, operatorName));
+				case 'Basics.divide':
+					return A2(
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticDivisionBranch,
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(arg1),
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(arg2));
+				case 'Basics.multiply':
+					return A2(
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticOperatorBranch,
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$Multiply,
+						A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, typedValue, operatorName));
+				default:
+					return $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(typedValue);
+			}
+		} else {
+			return $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(typedValue);
+		}
+	} else {
+		return $author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(typedValue);
+	}
+};
+var $author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion = F2(
+	function (value, operatorName) {
+		if (value.$ === 'Apply') {
+			var fun = value.b;
+			var arg = value.c;
+			var _v1 = A2($author$project$Morphir$IR$Value$uncurryApply, fun, arg);
+			var _function = _v1.a;
+			var args = _v1.b;
+			var _v2 = _Utils_Tuple2(_function, args);
+			if ((((_v2.a.$ === 'Reference') && _v2.b.b) && _v2.b.b.b) && (!_v2.b.b.b.b)) {
+				var _v3 = _v2.a;
+				var _v4 = _v3.b;
+				var moduleName = _v4.b;
+				var localName = _v4.c;
+				var _v5 = _v2.b;
+				var arg1 = _v5.a;
+				var _v6 = _v5.b;
+				var arg2 = _v6.a;
+				return _Utils_eq(
+					$author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence(
+						A2($author$project$Morphir$Visual$Components$AritmeticExpressions$functionName, moduleName, localName)),
+					$author$project$Morphir$Visual$Components$AritmeticExpressions$currentPrecedence(operatorName)) ? _Utils_ap(
+					A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, arg1, operatorName),
+					A2($author$project$Morphir$Visual$Components$AritmeticExpressions$helperArithmeticTreeBuilderRecursion, arg2, operatorName)) : _List_fromArray(
+					[
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$fromArithmeticTypedValue(value)
+					]);
+			} else {
+				return _List_fromArray(
+					[
+						$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(value)
+					]);
+			}
+		} else {
+			return _List_fromArray(
+				[
+					$author$project$Morphir$Visual$Components$AritmeticExpressions$ArithmeticValueLeaf(value)
+				]);
+		}
+	});
+var $author$project$Morphir$Visual$BoolOperatorTree$And = {$: 'And'};
+var $author$project$Morphir$Visual$BoolOperatorTree$BoolOperatorBranch = F2(
+	function (a, b) {
+		return {$: 'BoolOperatorBranch', a: a, b: b};
+	});
+var $author$project$Morphir$Visual$BoolOperatorTree$BoolValueLeaf = function (a) {
+	return {$: 'BoolValueLeaf', a: a};
+};
+var $author$project$Morphir$Visual$BoolOperatorTree$Or = {$: 'Or'};
+var $author$project$Morphir$Visual$BoolOperatorTree$functionName = F2(
+	function (moduleName, localName) {
+		return A2(
+			$elm$core$String$join,
+			'.',
+			_List_fromArray(
+				[
+					A3($author$project$Morphir$IR$Path$toString, $author$project$Morphir$IR$Name$toTitleCase, '.', moduleName),
+					$author$project$Morphir$IR$Name$toCamelCase(localName)
+				]));
 	});
 var $author$project$Morphir$Visual$BoolOperatorTree$fromTypedValue = function (typedValue) {
 	if (typedValue.$ === 'Apply') {
@@ -14679,9 +14812,69 @@ var $author$project$Morphir$Visual$BoolOperatorTree$helperFunction = F2(
 				]);
 		}
 	});
+var $author$project$Morphir$IR$SDK$Basics$isNumber = function (tpe) {
+	_v0$2:
+	while (true) {
+		if ((((((((((((((((((((((tpe.$ === 'Reference') && tpe.b.a.b) && tpe.b.a.a.b) && (tpe.b.a.a.a === 'morphir')) && (!tpe.b.a.a.b.b)) && tpe.b.a.b.b) && tpe.b.a.b.a.b) && (tpe.b.a.b.a.a === 's')) && tpe.b.a.b.a.b.b) && (tpe.b.a.b.a.b.a === 'd')) && tpe.b.a.b.a.b.b.b) && (tpe.b.a.b.a.b.b.a === 'k')) && (!tpe.b.a.b.a.b.b.b.b)) && (!tpe.b.a.b.b.b)) && tpe.b.b.b) && tpe.b.b.a.b) && (tpe.b.b.a.a === 'basics')) && (!tpe.b.b.a.b.b)) && (!tpe.b.b.b.b)) && tpe.b.c.b) && (!tpe.b.c.b.b)) && (!tpe.c.b)) {
+			switch (tpe.b.c.a) {
+				case 'float':
+					var a = tpe.a;
+					var _v1 = tpe.b;
+					var _v2 = _v1.a;
+					var _v3 = _v2.a;
+					var _v4 = _v2.b;
+					var _v5 = _v4.a;
+					var _v6 = _v5.b;
+					var _v7 = _v6.b;
+					var _v8 = _v1.b;
+					var _v9 = _v8.a;
+					var _v10 = _v1.c;
+					return true;
+				case 'int':
+					var a = tpe.a;
+					var _v11 = tpe.b;
+					var _v12 = _v11.a;
+					var _v13 = _v12.a;
+					var _v14 = _v12.b;
+					var _v15 = _v14.a;
+					var _v16 = _v15.b;
+					var _v17 = _v16.b;
+					var _v18 = _v11.b;
+					var _v19 = _v18.a;
+					var _v20 = _v11.c;
+					return true;
+				default:
+					break _v0$2;
+			}
+		} else {
+			break _v0$2;
+		}
+	}
+	return false;
+};
 var $mdgriffith$elm_ui$Element$rgb = F3(
 	function (r, g, b) {
 		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, r, g, b, 1);
+	});
+var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
+var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
+var $mdgriffith$elm_ui$Element$row = F2(
+	function (attrs, children) {
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asRow,
+			$mdgriffith$elm_ui$Internal$Model$div,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+						attrs))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
 var $author$project$Morphir$IR$Value$valueAttribute = function (v) {
 	switch (v.$) {
@@ -14802,26 +14995,6 @@ var $mdgriffith$elm_ui$Element$paddingEach = function (_v0) {
 				left));
 	}
 };
-var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
-var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
-var $mdgriffith$elm_ui$Element$row = F2(
-	function (attrs, children) {
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asRow,
-			$mdgriffith$elm_ui$Internal$Model$div,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-						attrs))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
-	});
 var $author$project$Morphir$Visual$ViewApply$view = F3(
 	function (viewValue, functionValue, argValues) {
 		var _v0 = _Utils_Tuple2(functionValue, argValues);
@@ -14840,7 +15013,8 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$spacing(10)
+									$mdgriffith$elm_ui$Element$spacing(10),
+									$mdgriffith$elm_ui$Element$centerX
 								]),
 							_List_fromArray(
 								[
@@ -14881,7 +15055,9 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 								$mdgriffith$elm_ui$Element$column,
 								_List_fromArray(
 									[
-										$mdgriffith$elm_ui$Element$spacing(10)
+										$mdgriffith$elm_ui$Element$spacing(10),
+										$mdgriffith$elm_ui$Element$centerX,
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 									]),
 								_List_fromArray(
 									[
@@ -14892,7 +15068,9 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 											[
 												$mdgriffith$elm_ui$Element$paddingEach(
 												{bottom: 0, left: 10, right: 0, top: 0}),
-												$mdgriffith$elm_ui$Element$spacing(10)
+												$mdgriffith$elm_ui$Element$spacing(10),
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+												$mdgriffith$elm_ui$Element$centerX
 											]),
 										A2($elm$core$List$map, viewValue, argValues))
 									])),
@@ -14903,13 +15081,43 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 										$mdgriffith$elm_ui$Element$row,
 										_List_fromArray(
 											[
-												$mdgriffith$elm_ui$Element$spacing(5)
+												$mdgriffith$elm_ui$Element$spacing(5),
+												$mdgriffith$elm_ui$Element$centerX,
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 											]),
 										_List_fromArray(
 											[
-												viewValue(argValue1),
-												$mdgriffith$elm_ui$Element$text(functionText),
-												viewValue(argValue2)
+												A2(
+												$mdgriffith$elm_ui$Element$row,
+												_List_fromArray(
+													[
+														$mdgriffith$elm_ui$Element$spacing(6),
+														$mdgriffith$elm_ui$Element$centerX
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$mdgriffith$elm_ui$Element$column,
+														_List_Nil,
+														_List_fromArray(
+															[
+																viewValue(argValue1)
+															])),
+														A2(
+														$mdgriffith$elm_ui$Element$column,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$mdgriffith$elm_ui$Element$text(functionText)
+															])),
+														A2(
+														$mdgriffith$elm_ui$Element$column,
+														_List_Nil,
+														_List_fromArray(
+															[
+																viewValue(argValue2)
+															]))
+													]))
 											]));
 								},
 								A2($elm$core$Dict$get, functionName, $author$project$Morphir$Visual$ViewApply$inlineBinaryOperators)));
@@ -14925,7 +15133,9 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$spacing(10)
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 				]),
 			_List_fromArray(
 				[
@@ -14935,61 +15145,203 @@ var $author$project$Morphir$Visual$ViewApply$view = F3(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$moveRight(10),
-							$mdgriffith$elm_ui$Element$spacing(10)
+							$mdgriffith$elm_ui$Element$spacing(10),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$centerX
 						]),
 					A2($elm$core$List$map, viewValue, argValues))
 				]));
 	});
-var $author$project$Morphir$Visual$ViewBoolOperatorTree$Vertical = {$: 'Vertical'};
-var $mdgriffith$elm_ui$Internal$Model$AlignX = function (a) {
-	return {$: 'AlignX', a: a};
-};
-var $mdgriffith$elm_ui$Internal$Model$CenterX = {$: 'CenterX'};
-var $mdgriffith$elm_ui$Element$centerX = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$CenterX);
-var $mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
-	return {$: 'AlignY', a: a};
-};
-var $mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
-var $mdgriffith$elm_ui$Element$centerY = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$CenterY);
-var $author$project$Morphir$Visual$ViewBoolOperatorTree$Horizontal = {$: 'Horizontal'};
-var $author$project$Morphir$Visual$ViewBoolOperatorTree$flipLayoutDirection = function (direction) {
-	if (direction.$ === 'Horizontal') {
-		return $author$project$Morphir$Visual$ViewBoolOperatorTree$Vertical;
-	} else {
-		return $author$project$Morphir$Visual$ViewBoolOperatorTree$Horizontal;
-	}
-};
-var $elm$core$List$intersperse = F2(
-	function (sep, xs) {
-		if (!xs.b) {
-			return _List_Nil;
-		} else {
-			var hd = xs.a;
-			var tl = xs.b;
-			var step = F2(
-				function (x, rest) {
-					return A2(
-						$elm$core$List$cons,
-						sep,
-						A2($elm$core$List$cons, x, rest));
-				});
-			var spersed = A3($elm$core$List$foldr, step, _List_Nil, tl);
-			return A2($elm$core$List$cons, hd, spersed);
-		}
-	});
-var $author$project$Morphir$Visual$ViewBoolOperatorTree$operatorToString = function (operator) {
-	if (operator.$ === 'Or') {
-		return 'OR';
-	} else {
-		return 'AND';
-	}
-};
-var $mdgriffith$elm_ui$Element$Font$size = function (i) {
+var $mdgriffith$elm_ui$Internal$Flag$borderColor = $mdgriffith$elm_ui$Internal$Flag$flag(28);
+var $mdgriffith$elm_ui$Element$Border$color = function (clr) {
 	return A2(
 		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$fontSize,
-		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
+		$mdgriffith$elm_ui$Internal$Flag$borderColor,
+		A3(
+			$mdgriffith$elm_ui$Internal$Model$Colored,
+			'bc-' + $mdgriffith$elm_ui$Internal$Model$formatColorClass(clr),
+			'border-color',
+			clr));
 };
+var $author$project$Morphir$Visual$ViewArithmetic$currentPrecedence = function (operatorName) {
+	switch (operatorName) {
+		case 'Basics.add':
+			return 1;
+		case 'Basics.subtract':
+			return 1;
+		case 'Basics.multiply':
+			return 2;
+		case 'Basics.divide':
+			return 3;
+		default:
+			return 0;
+	}
+};
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $author$project$Morphir$Visual$ViewArithmetic$functionName = function (ao) {
+	switch (ao.$) {
+		case 'Add':
+			return 'Basics.add';
+		case 'Subtract':
+			return 'Basics.subtract';
+		default:
+			return 'Basics.multiply';
+	}
+};
+var $author$project$Morphir$Visual$ViewArithmetic$dropInPrecedence = F5(
+	function (arithmeticOperatorTrees, index, currentPointer, currentPrecedenceValue, previousOperator) {
+		dropInPrecedence:
+		while (true) {
+			if (_Utils_cmp(currentPointer, index) < 0) {
+				var $temp$arithmeticOperatorTrees = A2($elm$core$List$drop, 1, arithmeticOperatorTrees),
+					$temp$index = index,
+					$temp$currentPointer = currentPointer + 1,
+					$temp$currentPrecedenceValue = currentPrecedenceValue,
+					$temp$previousOperator = previousOperator;
+				arithmeticOperatorTrees = $temp$arithmeticOperatorTrees;
+				index = $temp$index;
+				currentPointer = $temp$currentPointer;
+				currentPrecedenceValue = $temp$currentPrecedenceValue;
+				previousOperator = $temp$previousOperator;
+				continue dropInPrecedence;
+			} else {
+				var _v0 = $elm$core$List$head(arithmeticOperatorTrees);
+				if (_v0.$ === 'Just') {
+					var a = _v0.a;
+					switch (a.$) {
+						case 'ArithmeticOperatorBranch':
+							var arithmeticOperator = a.a;
+							var arithmeticOperatorTrees1 = a.b;
+							return (_Utils_cmp(
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(previousOperator))) > 0) ? true : false;
+						case 'ArithmeticValueLeaf':
+							var typedValue = a.a;
+							var $temp$arithmeticOperatorTrees = A2($elm$core$List$drop, 1, arithmeticOperatorTrees),
+								$temp$index = index,
+								$temp$currentPointer = currentPointer + 1,
+								$temp$currentPrecedenceValue = currentPrecedenceValue,
+								$temp$previousOperator = previousOperator;
+							arithmeticOperatorTrees = $temp$arithmeticOperatorTrees;
+							index = $temp$index;
+							currentPointer = $temp$currentPointer;
+							currentPrecedenceValue = $temp$currentPrecedenceValue;
+							previousOperator = $temp$previousOperator;
+							continue dropInPrecedence;
+						default:
+							var arithmeticOperatorTree = a.a;
+							var arithmeticOperatorTree1 = a.b;
+							return (_Utils_cmp(
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence('Basics.divide'),
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(previousOperator))) < 0) ? true : false;
+					}
+				} else {
+					return false;
+				}
+			}
+		}
+	});
+var $author$project$Morphir$Visual$ViewArithmetic$functionNameHelper = function (ao) {
+	switch (ao.$) {
+		case 'Add':
+			return 'Add';
+		case 'Subtract':
+			return 'Subtract';
+		default:
+			return 'Multiply';
+	}
+};
+var $author$project$Morphir$Visual$ViewArithmetic$inlineBinaryOperators = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2('Basics.equal', '='),
+			_Utils_Tuple2('Basics.lessThan', '<'),
+			_Utils_Tuple2('Basics.lessThanOrEqual', '<='),
+			_Utils_Tuple2('Basics.greaterThan', '>'),
+			_Utils_Tuple2('Basics.greaterThanOrEqual', '>='),
+			_Utils_Tuple2('Add', '+'),
+			_Utils_Tuple2('Subtract', '-'),
+			_Utils_Tuple2('Multiply', '*')
+		]));
+var $author$project$Morphir$Visual$ViewArithmetic$riseInPrecedence = F5(
+	function (arithmeticOperatorTrees, index, currentPointer, currentPrecedenceValue, previousOperator) {
+		riseInPrecedence:
+		while (true) {
+			if (_Utils_cmp(currentPointer, index) < 0) {
+				var $temp$arithmeticOperatorTrees = A2($elm$core$List$drop, 1, arithmeticOperatorTrees),
+					$temp$index = index,
+					$temp$currentPointer = currentPointer + 1,
+					$temp$currentPrecedenceValue = currentPrecedenceValue,
+					$temp$previousOperator = previousOperator;
+				arithmeticOperatorTrees = $temp$arithmeticOperatorTrees;
+				index = $temp$index;
+				currentPointer = $temp$currentPointer;
+				currentPrecedenceValue = $temp$currentPrecedenceValue;
+				previousOperator = $temp$previousOperator;
+				continue riseInPrecedence;
+			} else {
+				var _v0 = $elm$core$List$head(arithmeticOperatorTrees);
+				if (_v0.$ === 'Just') {
+					var a = _v0.a;
+					switch (a.$) {
+						case 'ArithmeticOperatorBranch':
+							var arithmeticOperator = a.a;
+							var arithmeticOperatorTrees1 = a.b;
+							return (_Utils_cmp(
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(previousOperator))) > 0) ? true : false;
+						case 'ArithmeticValueLeaf':
+							var typedValue = a.a;
+							var $temp$arithmeticOperatorTrees = A2($elm$core$List$drop, 1, arithmeticOperatorTrees),
+								$temp$index = index,
+								$temp$currentPointer = currentPointer + 1,
+								$temp$currentPrecedenceValue = currentPrecedenceValue,
+								$temp$previousOperator = previousOperator;
+							arithmeticOperatorTrees = $temp$arithmeticOperatorTrees;
+							index = $temp$index;
+							currentPointer = $temp$currentPointer;
+							currentPrecedenceValue = $temp$currentPrecedenceValue;
+							previousOperator = $temp$previousOperator;
+							continue riseInPrecedence;
+						default:
+							var arithmeticOperatorTree = a.a;
+							var arithmeticOperatorTree1 = a.b;
+							return (_Utils_cmp(
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence('Basics.divide'),
+								$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+									$author$project$Morphir$Visual$ViewArithmetic$functionName(previousOperator))) > 0) ? true : false;
+					}
+				} else {
+					return false;
+				}
+			}
+		}
+	});
 var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
 	function (a, b, c, d, e) {
 		return {$: 'BorderWidth', a: a, b: b, c: c, d: d, e: e};
@@ -15034,6 +15386,272 @@ var $mdgriffith$elm_ui$Element$Border$widthEach = function (_v0) {
 			right,
 			bottom,
 			left));
+};
+var $author$project$Morphir$Visual$ViewArithmetic$view = F2(
+	function (viewValue, arithmeticOperatorTree) {
+		switch (arithmeticOperatorTree.$) {
+			case 'ArithmeticValueLeaf':
+				var typedValue = arithmeticOperatorTree.a;
+				return viewValue(typedValue);
+			case 'ArithmeticDivisionBranch':
+				var arithmeticOperatorTree1 = arithmeticOperatorTree.a;
+				var arithmeticOperatorTree2 = arithmeticOperatorTree.b;
+				if (arithmeticOperatorTree1.$ === 'ArithmeticValueLeaf') {
+					var typedValue1 = arithmeticOperatorTree1.a;
+					if (arithmeticOperatorTree2.$ === 'ArithmeticValueLeaf') {
+						var typedValue2 = arithmeticOperatorTree2.a;
+						return A2(
+							$mdgriffith$elm_ui$Element$column,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$centerX,
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$centerX,
+											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$mdgriffith$elm_ui$Element$row,
+											_List_fromArray(
+												[
+													$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+													$mdgriffith$elm_ui$Element$spacing(5),
+													$mdgriffith$elm_ui$Element$Border$color(
+													A3($mdgriffith$elm_ui$Element$rgb, 0, 0.7, 0)),
+													$mdgriffith$elm_ui$Element$paddingEach(
+													{bottom: 4, left: 0, right: 0, top: 0}),
+													$mdgriffith$elm_ui$Element$centerX
+												]),
+											_List_fromArray(
+												[
+													viewValue(typedValue1)
+												]))
+										])),
+									A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$centerX,
+											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+											$mdgriffith$elm_ui$Element$Border$solid,
+											$mdgriffith$elm_ui$Element$Border$widthEach(
+											{bottom: 0, left: 0, right: 0, top: 1}),
+											$mdgriffith$elm_ui$Element$paddingEach(
+											{bottom: 0, left: 0, right: 0, top: 10})
+										]),
+									_List_fromArray(
+										[
+											viewValue(typedValue2)
+										]))
+								]));
+					} else {
+						return $mdgriffith$elm_ui$Element$none;
+					}
+				} else {
+					return $mdgriffith$elm_ui$Element$none;
+				}
+			default:
+				var arithmeticOperator = arithmeticOperatorTree.a;
+				var arithmeticOperatorTrees = arithmeticOperatorTree.b;
+				var separator = A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$centerX
+						]),
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$text(
+							A2(
+								$elm$core$Maybe$withDefault,
+								'',
+								A2(
+									$elm$core$Dict$get,
+									$author$project$Morphir$Visual$ViewArithmetic$functionNameHelper(arithmeticOperator),
+									$author$project$Morphir$Visual$ViewArithmetic$inlineBinaryOperators)))
+						]));
+				return A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$centerX
+						]),
+					A2(
+						$elm$core$List$indexedMap,
+						F2(
+							function (i, b) {
+								return (A5(
+									$author$project$Morphir$Visual$ViewArithmetic$dropInPrecedence,
+									arithmeticOperatorTrees,
+									i,
+									0,
+									$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+										$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+									arithmeticOperator) && (A5(
+									$author$project$Morphir$Visual$ViewArithmetic$riseInPrecedence,
+									arithmeticOperatorTrees,
+									i,
+									0,
+									$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+										$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+									arithmeticOperator) && (_Utils_cmp(
+									i,
+									$elm$core$List$length(arithmeticOperatorTrees) - 1) < 0))) ? A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(2),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$text('('),
+											b,
+											$mdgriffith$elm_ui$Element$text(')'),
+											separator
+										])) : (A5(
+									$author$project$Morphir$Visual$ViewArithmetic$dropInPrecedence,
+									arithmeticOperatorTrees,
+									i,
+									0,
+									$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+										$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+									arithmeticOperator) ? A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(2),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$text('('),
+											b,
+											$mdgriffith$elm_ui$Element$text(')')
+										])) : ((A5(
+									$author$project$Morphir$Visual$ViewArithmetic$riseInPrecedence,
+									arithmeticOperatorTrees,
+									i,
+									0,
+									$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+										$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+									arithmeticOperator) && (_Utils_cmp(
+									i,
+									$elm$core$List$length(arithmeticOperatorTrees) - 1) < 0)) ? A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(2),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[b, separator])) : (A5(
+									$author$project$Morphir$Visual$ViewArithmetic$riseInPrecedence,
+									arithmeticOperatorTrees,
+									i,
+									0,
+									$author$project$Morphir$Visual$ViewArithmetic$currentPrecedence(
+										$author$project$Morphir$Visual$ViewArithmetic$functionName(arithmeticOperator)),
+									arithmeticOperator) ? A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$text('('),
+											b,
+											$mdgriffith$elm_ui$Element$text(')')
+										])) : ((_Utils_cmp(
+									i,
+									$elm$core$List$length(arithmeticOperatorTrees) - 1) < 0) ? A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[b, separator])) : A2(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$padding(5),
+											$mdgriffith$elm_ui$Element$spacing(5),
+											$mdgriffith$elm_ui$Element$centerX
+										]),
+									_List_fromArray(
+										[b]))))));
+							}),
+						A2(
+							$elm$core$List$map,
+							$author$project$Morphir$Visual$ViewArithmetic$view(viewValue),
+							arithmeticOperatorTrees)));
+		}
+	});
+var $author$project$Morphir$Visual$ViewBoolOperatorTree$Vertical = {$: 'Vertical'};
+var $mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
+	return {$: 'AlignY', a: a};
+};
+var $mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
+var $mdgriffith$elm_ui$Element$centerY = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$CenterY);
+var $author$project$Morphir$Visual$ViewBoolOperatorTree$Horizontal = {$: 'Horizontal'};
+var $author$project$Morphir$Visual$ViewBoolOperatorTree$flipLayoutDirection = function (direction) {
+	if (direction.$ === 'Horizontal') {
+		return $author$project$Morphir$Visual$ViewBoolOperatorTree$Vertical;
+	} else {
+		return $author$project$Morphir$Visual$ViewBoolOperatorTree$Horizontal;
+	}
+};
+var $elm$core$List$intersperse = F2(
+	function (sep, xs) {
+		if (!xs.b) {
+			return _List_Nil;
+		} else {
+			var hd = xs.a;
+			var tl = xs.b;
+			var step = F2(
+				function (x, rest) {
+					return A2(
+						$elm$core$List$cons,
+						sep,
+						A2($elm$core$List$cons, x, rest));
+				});
+			var spersed = A3($elm$core$List$foldr, step, _List_Nil, tl);
+			return A2($elm$core$List$cons, hd, spersed);
+		}
+	});
+var $author$project$Morphir$Visual$ViewBoolOperatorTree$operatorToString = function (operator) {
+	if (operator.$ === 'Or') {
+		return 'OR';
+	} else {
+		return 'AND';
+	}
+};
+var $mdgriffith$elm_ui$Element$Font$size = function (i) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$fontSize,
+		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
 };
 var $author$project$Morphir$Visual$ViewBoolOperatorTree$viewTreeNode = F3(
 	function (viewValue, direction, boolOperatorTree) {
@@ -15226,17 +15844,6 @@ var $author$project$Morphir$Visual$Components$DecisionTree$highlightColor = {
 	_default: A3($author$project$Morphir$Visual$Components$DecisionTree$Color, 120, 120, 120),
 	_false: A3($author$project$Morphir$Visual$Components$DecisionTree$Color, 180, 0, 0),
 	_true: A3($author$project$Morphir$Visual$Components$DecisionTree$Color, 0, 180, 0)
-};
-var $mdgriffith$elm_ui$Internal$Flag$borderColor = $mdgriffith$elm_ui$Internal$Flag$flag(28);
-var $mdgriffith$elm_ui$Element$Border$color = function (clr) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$borderColor,
-		A3(
-			$mdgriffith$elm_ui$Internal$Model$Colored,
-			'bc-' + $mdgriffith$elm_ui$Internal$Model$formatColorClass(clr),
-			'border-color',
-			clr));
 };
 var $mdgriffith$elm_ui$Element$Font$color = function (fontColor) {
 	return A2(
@@ -17307,7 +17914,9 @@ var $author$project$Morphir$Visual$ViewLiteral$viewLiteralText = F2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
-					$author$project$Morphir$Visual$Common$cssClass(className)
+					$author$project$Morphir$Visual$Common$cssClass(className),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$centerX
 				]),
 			_List_fromArray(
 				[
@@ -17373,6 +17982,8 @@ var $author$project$Morphir$Visual$ViewReference$view = F3(
 				[
 					$mdgriffith$elm_ui$Element$padding(8),
 					$mdgriffith$elm_ui$Element$spacing(8),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$centerX,
 					$mdgriffith$elm_ui$Element$Events$onClick(
 					A2(
 						context.onReferenceClicked,
@@ -17383,7 +17994,11 @@ var $author$project$Morphir$Visual$ViewReference$view = F3(
 				[
 					A2(
 					$mdgriffith$elm_ui$Element$el,
-					_List_Nil,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$centerX
+						]),
 					$mdgriffith$elm_ui$Element$text(
 						$author$project$Morphir$Visual$Common$nameToText(localName)))
 				]));
@@ -18246,10 +18861,23 @@ var $author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature = F3(
 					var tpe = value.a;
 					var name = value.b;
 					return A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_Nil,
-						$mdgriffith$elm_ui$Element$text(
-							$author$project$Morphir$Visual$Common$nameToText(name)));
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$spacing(6),
+								$mdgriffith$elm_ui$Element$centerX
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$text(
+										$author$project$Morphir$Visual$Common$nameToText(name))
+									]))
+							]));
 				case 'Reference':
 					var tpe = value.a;
 					var fQName = value.b;
@@ -18363,7 +18991,15 @@ var $author$project$Morphir$Visual$ViewValue$viewValueByValueType = F3(
 				A2($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues),
 				boolOperatorTree);
 		} else {
-			return A3($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues, typedValue);
+			if ($author$project$Morphir$IR$SDK$Basics$isNumber(valueType)) {
+				var arithmeticOperatorTree = $author$project$Morphir$Visual$Components$AritmeticExpressions$fromArithmeticTypedValue(typedValue);
+				return A2(
+					$author$project$Morphir$Visual$ViewArithmetic$view,
+					A2($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues),
+					arithmeticOperatorTree);
+			} else {
+				return A3($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues, typedValue);
+			}
 		}
 	});
 var $author$project$Morphir$Visual$ViewValue$viewDefinition = F5(
@@ -18373,7 +19009,9 @@ var $author$project$Morphir$Visual$ViewValue$viewDefinition = F5(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$spacing(8)
+					$mdgriffith$elm_ui$Element$spacing(8),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$centerX
 				]),
 			_List_fromArray(
 				[

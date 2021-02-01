@@ -33,7 +33,8 @@ drawTree listAll htmlAggregation =
                                                         Html.Attributes.style "position" "absolute",
                                                         Html.Attributes.style "background-color" "#333",
                                                         Html.Attributes.style "color" "rgb(96, 202, 245)",
-                                                        Html.Attributes.style "border" "3px solid rgb(116, 222, 255)",
+                                                        Html.Attributes.style "border-top" "3px solid rgb(90, 196, 229)",
+                                                        Html.Attributes.style "border-bottom" "3px solid rgb(90, 196, 229)",
                                                         Html.Attributes.style "box-shadow" "2px 3px 3px #999, -1px 1px 2px #999",
                                                         Html.Attributes.style "top" ((String.fromInt (400 + ((indO + indI) * 60))) ++ "px"),
                                                         Html.Attributes.style "left" ((String.fromInt (30 + (indO * 220))) ++ "px")] [Html.text (String.replace "]" "" (String.replace "[" "" elemInner))] ) elem ) listAll

@@ -55,7 +55,8 @@ main =
     ,Html.Attributes.style "position" "absolute"
     ]
     [
-    polygon [ fill "#009fdf", points "70,425 70,465 75,465 75,425" ] [],
-     polygon [ fill "#009fdf", points "70,485 70,520 75,520 75,485" ] []
+    polygon [ fill "#6ec0ff", points "70,425 70,465 75,465 75,425" ] [],
+     polygon [ fill "#6ec0ff", points "70,485 70,525 75,525 75,485" ] [],
+     polygon [ fill "#6ec0ff", points "70,550 70,590 75,590 75,550" ] []
     ]),
   div [] [div [] (displayTextTree (createTreeFromString absString)), div [] (List.map (\p -> div [] p) (drawTree (createTreeFromString absString) []) )] ]

@@ -17017,6 +17017,95 @@ var $author$project$Morphir$IR$SDK$Basics$isNumber = function (tpe) {
 	}
 	return false;
 };
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $author$project$Morphir$IR$FQName$toString = function (_v0) {
+	var p = _v0.a;
+	var m = _v0.b;
+	var l = _v0.c;
+	return A2(
+		$elm$core$String$join,
+		':',
+		_List_fromArray(
+			[
+				A3($author$project$Morphir$IR$Path$toString, $author$project$Morphir$IR$Name$toTitleCase, '.', p),
+				A3($author$project$Morphir$IR$Path$toString, $author$project$Morphir$IR$Name$toTitleCase, '.', m),
+				$author$project$Morphir$IR$Name$toCamelCase(l)
+			]));
+};
+var $author$project$Morphir$Visual$ViewValue$helperFunctionValue = function (value1) {
+	switch (value1.$) {
+		case 'Literal':
+			var literal = value1.b;
+			switch (literal.$) {
+				case 'BoolLiteral':
+					var bool = literal.a;
+					if (bool) {
+						return 'AVL (Bool) = True';
+					} else {
+						return 'AVL (Bool) = False';
+					}
+				case 'CharLiteral':
+					var _char = literal.a;
+					return 'AVL (char) = ' + $elm$core$String$fromChar(_char);
+				case 'StringLiteral':
+					var string = literal.a;
+					return 'AVL (String) = ' + string;
+				case 'IntLiteral':
+					var _int = literal.a;
+					return 'AVL (Int) = ' + $elm$core$String$fromInt(_int);
+				default:
+					var _float = literal.a;
+					return 'AVL (Float) = ' + $elm$core$String$fromFloat(_float);
+			}
+		case 'Variable':
+			var name = value1.b;
+			return 'AVL (Variable) -> ' + $author$project$Morphir$IR$Name$toTitleCase(name);
+		case 'Reference':
+			var va = value1.a;
+			var fQName = value1.b;
+			return 'AVL (Reference) -> ' + $author$project$Morphir$IR$FQName$toString(fQName);
+		case 'Apply':
+			var va = value1.a;
+			var value2 = value1.b;
+			var value3 = value1.c;
+			return 'AVL (Apply): ' + ($author$project$Morphir$Visual$ViewValue$helperFunctionValue(value2) + (' __ ' + $author$project$Morphir$Visual$ViewValue$helperFunctionValue(value3)));
+		default:
+			return 'Some other format';
+	}
+};
+var $author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree = function (arithmeticOperatorTree) {
+	switch (arithmeticOperatorTree.$) {
+		case 'ArithmeticValueLeaf':
+			var typedValue = arithmeticOperatorTree.a;
+			return $author$project$Morphir$Visual$ViewValue$helperFunctionValue(typedValue);
+		case 'ArithmeticDivisionBranch':
+			var arithmeticOperatorTree1 = arithmeticOperatorTree.a;
+			var arithmeticOperatorTree2 = arithmeticOperatorTree.b;
+			return 'ADB' + (' -> Divide -> [ ' + ($author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree(arithmeticOperatorTree1) + (' , ' + ($author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree(arithmeticOperatorTree2) + ' ]'))));
+		default:
+			var arithmeticOperator = arithmeticOperatorTree.a;
+			var arithmeticOperatorTrees = arithmeticOperatorTree.b;
+			switch (arithmeticOperator.$) {
+				case 'Add':
+					return 'AOB' + (' -> Add -> [ ' + (A2(
+						$elm$core$String$join,
+						' , ',
+						A2($elm$core$List$map, $author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree, arithmeticOperatorTrees)) + ' ]'));
+				case 'Subtract':
+					return 'AOB' + (' -> Subtract -> [ ' + (A2(
+						$elm$core$String$join,
+						' , ',
+						A2($elm$core$List$map, $author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree, arithmeticOperatorTrees)) + ' ]'));
+				default:
+					return 'AOB' + (' -> Multiply -> [ ' + (A2(
+						$elm$core$String$join,
+						' , ',
+						A2($elm$core$List$map, $author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree, arithmeticOperatorTrees)) + ' ]'));
+			}
+	}
+};
 var $author$project$Morphir$IR$Value$valueAttribute = function (v) {
 	switch (v.$) {
 		case 'Literal':
@@ -19524,20 +19613,6 @@ var $author$project$Morphir$IR$Type$substituteTypeVariables = F2(
 				return $author$project$Morphir$IR$Type$Unit(a);
 		}
 	});
-var $author$project$Morphir$IR$FQName$toString = function (_v0) {
-	var p = _v0.a;
-	var m = _v0.b;
-	var l = _v0.c;
-	return A2(
-		$elm$core$String$join,
-		':',
-		_List_fromArray(
-			[
-				A3($author$project$Morphir$IR$Path$toString, $author$project$Morphir$IR$Name$toTitleCase, '.', p),
-				A3($author$project$Morphir$IR$Path$toString, $author$project$Morphir$IR$Name$toTitleCase, '.', m),
-				$author$project$Morphir$IR$Name$toCamelCase(l)
-			]));
-};
 var $author$project$Morphir$IR$Distribution$resolveTypeReference = F3(
 	function (fQName, typeArgs, distribution) {
 		var packageName = fQName.a;
@@ -19899,9 +19974,6 @@ var $author$project$Morphir$Visual$ViewList$view = F4(
 			}
 		}
 	});
-var $elm$core$String$fromChar = function (_char) {
-	return A2($elm$core$String$cons, _char, '');
-};
 var $author$project$Morphir$Visual$Common$cssClass = function (className) {
 	return $mdgriffith$elm_ui$Element$htmlAttribute(
 		$elm$html$Html$Attributes$class(className));
@@ -21002,9 +21074,31 @@ var $author$project$Morphir$Visual$ViewValue$viewValueByValueType = F3(
 			if ($author$project$Morphir$IR$SDK$Basics$isNumber(valueType)) {
 				var arithmeticOperatorTree = $author$project$Morphir$Visual$Components$AritmeticExpressions$fromArithmeticTypedValue(typedValue);
 				return A2(
-					$author$project$Morphir$Visual$ViewArithmetic$view,
-					A2($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues),
-					arithmeticOperatorTree);
+					$mdgriffith$elm_ui$Element$column,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Morphir$Visual$ViewArithmetic$view,
+							A2($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues),
+							arithmeticOperatorTree),
+							A2(
+							$mdgriffith$elm_ui$Element$column,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$padding(10),
+									$mdgriffith$elm_ui$Element$Background$color(
+									A3($mdgriffith$elm_ui$Element$rgb255, 50, 50, 50)),
+									$mdgriffith$elm_ui$Element$Font$size(16),
+									$mdgriffith$elm_ui$Element$Font$color(
+									A3($mdgriffith$elm_ui$Element$rgb255, 78, 185, 255))
+								]),
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$text(
+									$author$project$Morphir$Visual$ViewValue$parseArithmeticOperatorTree(arithmeticOperatorTree))
+								]))
+						]));
 			} else {
 				return A3($author$project$Morphir$Visual$ViewValue$viewValueByLanguageFeature, ctx, argumentValues, typedValue);
 			}

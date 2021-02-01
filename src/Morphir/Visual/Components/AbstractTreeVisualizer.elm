@@ -96,22 +96,13 @@ main =
     , viewBox "0 0 1200 1200"
     ,Html.Attributes.style "position" "absolute"
     ]
-    [
-    polygon [ fill "#6ec0ff", points "60,425 60,465 65,465 65,425" ] [],
-     polygon [ fill "#6ec0ff", points "60,485 60,525 65,525 65,485" ] [],
-     polygon [ fill "#6ec0ff", points "60,550 60,590 65,590 65,550" ] [],
-     polygon [ fill "#6ec0ff", points ("80,485 " ++ (String.fromFloat ((Maybe.withDefault 0.0 (List.head (List.drop 0 listy) )) * 8))  ++ ",485 " ++ (String.fromFloat ((Maybe.withDefault 0.0 (List.head  (List.drop 0 listy) )) * 8)) ++ ",480 80,480") ] [],
 
-     polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55))  ++ ",485 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55)) ++ ",525 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++ ",525 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++  ",485") ] [],
-
-     polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55))  ++ ",550 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55)) ++ ",590 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++ ",590 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++  ",550") ] [],
-
-     polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55))  ++ ",610 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55)) ++ ",650 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++ ",650 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 50)) ++  ",610") ] [],
-
-     polygon [ fill "#6ec0ff", points ( (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55)) ++ ",550 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 2 listy) )) * 12.3) + 55))  ++ ",550 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head  (List.drop 2 listy) )) * 12.3) + 55)) ++ ",545 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55)) ++ ",545") ] [],
-
-     polygon [ fill "#6ec0ff", points "496,550 496,590 501,590 501,550" ] [],
-     polygon [ fill "#6ec0ff", points "496,610 496,650 501,650 501,610" ] [],
-     polygon [ fill "#6ec0ff", points "496,670 496,710 501,710 501,670" ] []
-    ])
+      (List.concat (List.indexedMap (\ind1 elm ->
+     [polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55))  ++ "," ++ (String.fromInt (425 + (ind1*60)) ) ++ " " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++ ","++ (String.fromInt (425 + (ind1*60)) ) ++" " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++ ","++ (String.fromInt (460 + (ind1*60)) ) ++" " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55)) ++ "," ++  (String.fromInt (460 + (ind1*60)) ) ) ] [],
+     polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55))  ++ "," ++ (String.fromInt (550 + (ind1*60)) ) ++ " " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55)) ++ "," ++ (String.fromInt (590 + (ind1*60)) ) ++ " " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++ "," ++ (String.fromInt (590 + (ind1*60)) ) ++ " " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++ "," ++ (String.fromInt (425 + (ind1*60)) ) ) ] [],
+     polygon [ fill "#6ec0ff", points ("" ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55))  ++ ",610 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55)) ++ ",650 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++ ",650 " ++ (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 50)) ++  ",610") ] [],
+     polygon [ fill "#222", points ( (String.fromFloat (((Maybe.withDefault 0.0 (elm )) * 12.3) + 55)) ++ "," ++ (String.fromInt (425 + ((ind1 + 1) * 60)) ) ++ (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop ind1 listy) )) * 12.3) + 55))   ++ "," ++ (String.fromInt (430 + ((ind1 + 1) * 60)) ) ++  (String.fromFloat (((Maybe.withDefault 0.0 (List.head  (List.drop ind1 listy) )) * 12.3) + 55))  ++ "," ++ (String.fromInt (430 + ((ind1 + 1) * 60)) ) ++  (String.fromFloat (((Maybe.withDefault 0.0 (List.head (List.drop 1 listy) )) * 12.3) + 55))  ++ "," ++ (String.fromInt (425 + ((ind1 + 1) * 60)) )) ] []
+     ]
+    ) (List.map (\e -> Just e) listy) ))
+    )
   ]

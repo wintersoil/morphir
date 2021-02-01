@@ -62,7 +62,7 @@ drawTree listAll htmlAggregation =
                                                         Html.Attributes.style "border-bottom" "3px solid rgb(90, 196, 229)",
                                                         Html.Attributes.style "box-shadow" "2px 3px 3px #999, -1px 1px 2px #999",
                                                         Html.Attributes.style "top" ((String.fromInt (400 + ((indO + indI) * 60))) ++ "px"),
-                                                        Html.Attributes.style "left" ((String.fromFloat (30 + (previousIndexMax listAll (indO-1) 0 positionsX) * 12.3  )) ++ "px")] [Html.text (String.replace "]" "" (String.replace "[" "" elemInner))] ) elem ) listAll
+                                                        Html.Attributes.style "left" ((String.fromFloat (30 + (previousIndexMax listAll (indO-1) 0 positionsX) * 12.3  )) ++ "px")] [Html.text (String.replace "]" "" (String.replace "[" "" (elemInner ++ ((String.fromFloat (30 + (previousIndexMax listAll (indO-1) 0 positionsX) * 12.3  )) ++ "px")) ))] ) elem ) listAll
 
 displayTextTree: List (List String) -> List (Html msg)
 displayTextTree listAll=
@@ -89,7 +89,7 @@ main =
   in
   div [] [
   div [] [div [] (List.map (\p -> div [] p) (drawTree (createTreeFromString absString) []) )],
-  div [] [Html.text (String.join "" ( List.map String.fromFloat (populatePositions (createTreeFromString absString) (List.length (createTreeFromString absString)) 0 [])  ))  ],
+  div [] [Html.text (String.join "   " ( List.map String.fromFloat (populatePositions (createTreeFromString absString) (List.length (createTreeFromString absString)) 0 [])  ))  ],
   (svg
     [ Svg.Attributes.width "1200"
     , Svg.Attributes.height "1200"

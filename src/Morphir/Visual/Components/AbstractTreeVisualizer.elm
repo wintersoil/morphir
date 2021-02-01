@@ -36,11 +36,11 @@ drawTree listAll htmlAggregation =
                                                         Html.Attributes.style "border" "3px solid rgb(116, 222, 255)",
                                                         Html.Attributes.style "box-shadow" "2px 3px 3px #999, -1px 1px 2px #999",
                                                         Html.Attributes.style "top" ((String.fromInt (400 + ((indO + indI) * 60))) ++ "px"),
-                                                        Html.Attributes.style "left" ((String.fromInt (30 + (indO * 220))) ++ "px")] [Html.text elemInner] ) elem ) listAll
+                                                        Html.Attributes.style "left" ((String.fromInt (30 + (indO * 220))) ++ "px")] [Html.text (String.replace "]" "" (String.replace "[" "" elemInner))] ) elem ) listAll
 
 displayTextTree: List (List String) -> List (Html msg)
 displayTextTree listAll=
-  (List.map (\i -> 
+  (List.map (\i ->
                         div
                         [
                         Html.Attributes.style "font-family" "consolas",
@@ -48,7 +48,7 @@ displayTextTree listAll=
                         Html.Attributes.style "color" "#111",
                         Html.Attributes.style "margin-bottom" "5px",
                         Html.Attributes.style "padding" "10px 20px"]
-                        ((List.map (\j -> 
+                        ((List.map (\j ->
                         div
                         [] [Html.text j]) i))
                       ) listAll)
@@ -63,15 +63,19 @@ main =
     , viewBox "0 0 1200 1200"
     ,Html.Attributes.style "position" "absolute"
     ]
-    [ 
+    [
     polygon [ fill "#6ec0ff", points "60,425 60,465 65,465 65,425" ] [],
      polygon [ fill "#6ec0ff", points "60,485 60,525 65,525 65,485" ] [],
      polygon [ fill "#6ec0ff", points "60,550 60,590 65,590 65,550" ] [],
      polygon [ fill "#6ec0ff", points "80,485 250,485 250,480 80,480" ] [],
-     
+
      polygon [ fill "#6ec0ff", points "280,485 280,525 285,525 285,485" ] [],
      polygon [ fill "#6ec0ff", points "280,550 280,590 285,590 285,550" ] [],
      polygon [ fill "#6ec0ff", points "280,610 280,650 285,650 285,610" ] [],
-     polygon [ fill "#6ec0ff", points "285,550 480,550 480,545 285,545" ] []
+     polygon [ fill "#6ec0ff", points "285,550 480,550 480,545 285,545" ] [],
+
+     polygon [ fill "#6ec0ff", points "496,550 496,590 501,590 501,550" ] [],
+     polygon [ fill "#6ec0ff", points "496,610 496,650 501,650 501,610" ] [],
+     polygon [ fill "#6ec0ff", points "496,670 496,710 501,710 501,670" ] []
     ]),
   div [] [div [] (List.map (\p -> div [] p) (drawTree (createTreeFromString absString) []) )] ]

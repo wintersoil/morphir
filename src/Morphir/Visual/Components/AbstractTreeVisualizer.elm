@@ -49,31 +49,13 @@ positionsX = [30, 100, 200]
 
 main =
   div [] [(svg
-    [ Svg.Attributes.width "120"
-    , Svg.Attributes.height "120"
-    , viewBox "0 0 120 120"
+    [ Svg.Attributes.width "1200"
+    , Svg.Attributes.height "1200"
+    , viewBox "0 0 1200 1200"
+    ,Html.Attributes.style "position" "absolute"
     ]
-    [ rect
-        [ x "10"
-        , y "10"
-        , Svg.Attributes.width "100"
-        , Svg.Attributes.height "100"
-        , rx "15"
-        , ry "15"
-        ]
-        []
-    , circle
-        [ cx "50"
-        , cy "50"
-        , r "50"
-        ]
-        []
-    , Svg.path
-        [ M "430"
-   "430"
-        , dx "800"
-        , dy "800"
-        ]
-        []
+    [
+    polygon [ fill "#009fdf", points "70,425 70,465 75,465 75,425" ] [],
+     polygon [ fill "#009fdf", points "70,485 70,520 75,520 75,485" ] []
     ]),
   div [] [div [] (displayTextTree (createTreeFromString absString)), div [] (List.map (\p -> div [] p) (drawTree (createTreeFromString absString) []) )] ]
